@@ -1,35 +1,90 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState, useEffect } from "react";
+import {
+  Home,
+  BarChart3,
+  FolderOpen,
+  CheckSquare,
+  Users,
+  Target,
+  Settings,
+  Shield,
+  AlertTriangle,
+  Menu,
+  X,
+  ChevronDown,
+  ChevronRight,
+} from "lucide-react";
 
-function App() {
-  const [count, setCount] = useState(0)
+import Header from "./components/layout/Header";
+import HomePage from "./components/pages/Home";
+import GenericPage from "./components/pages/GenericPage";
+import Sidebar from "./components/layout/Sidebar";
+
+const App = () => {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [activeItem, setActiveItem] = useState("Home");
+  const [featuresExpanded, setFeaturesExpanded] = useState(true);
+  const [projectsExpanded, setProjectsExpanded] = useState(true);
+
+  const renderMainContent = () => {
+    if (activeItem === "Home") {
+      return <HomePage />;
+    }
+    return <GenericPage activeItem={activeItem} />;
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <div
+      style={{
+        backgroundColor: "#343a40",
+        color: "white",
+        minHeight: "100vh",
+        fontFamily:
+          '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+        width: "100%",
+      }}
+    >
+      <div style={{ display: "flex" }}>
+        <Sidebar
+          sidebarOpen={sidebarOpen}
+          setSidebarOpen={setSidebarOpen}
+          activeItem={activeItem}
+          setActiveItem={setActiveItem}
+          featuresExpanded={featuresExpanded}
+          setFeaturesExpanded={setFeaturesExpanded}
+          projectsExpanded={projectsExpanded}
+          setProjectsExpanded={setProjectsExpanded}
+        />
 
-export default App
+        <div
+          style={{
+            flexGrow: 1,
+            display: "flex",
+            flexWrap: "wrap",
+            flexDirection: "column",
+            marginLeft: window.innerWidth >= 992 ? "256px" : "0",
+            backgroundColor: "#343a40",
+            // width: "100%",
+            height: "100%",
+          }}
+        >
+          <Header
+            activeItem={activeItem}
+            onToggleSidebar={() => setSidebarOpen(true)}
+          />
+
+          <main
+            style={{
+              flexGrow: 1,
+              padding: "24px",
+            }}
+          >
+            {renderMainContent()}
+          </main>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default App;
